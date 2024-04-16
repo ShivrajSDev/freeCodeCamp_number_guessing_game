@@ -19,7 +19,25 @@ fi
 
 echo Guess the secret number between 1 and 1000:
 USER_NUMBER=0
-while (( $USER_NUMBER != SECRET_NUMBER ))
+NUM_TRIES=0
+until [[ $USER_NUMBER =~ $SECRET_NUMBER ]]
 do
   read USER_NUMBER
+  if [[ $USER_NUMBER =~ ^[0-9]+$ ]]
+  then
+    NUM_TRIES=$(($NUM_TRIES+1))
+    if [[ $USER_NUMBER -gt $SECRET_NUMBER ]]
+    then
+      echo "It's lower than that, guess again:"
+    else
+      if [[ $USER_NUMBER -lt $SECRET_NUMBER ]]
+      then
+        echo "It's higher than that, guess again:"
+      fi
+    fi
+  else
+    echo "That is not an integer, guess again:"
+  fi
 done
+
+echo "You guessed it in $NUM_TRIES tries. The secret number was $SECRET_NUMBER. Nice job!"
